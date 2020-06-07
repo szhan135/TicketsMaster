@@ -340,7 +340,7 @@ public class Ticketmaster{
 	
 	public static void AddBooking(Ticketmaster esql){//2
 		try{
-			String bookingID = esql.executeQueryAndReturnResult(bookingID);
+			int bookingID = esql.executeQueryAndReturnResult("Select * from Booking");
 			System.out.print("Booking ID: " + Integer.toString(bookingID));
 
 			System.out.print("Enter User Email: ");
