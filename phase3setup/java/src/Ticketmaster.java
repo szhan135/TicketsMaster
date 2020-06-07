@@ -313,25 +313,28 @@ public class Ticketmaster{
 	}//end readChoice
 	
 	public static void AddUser(Ticketmaster esql){//1
-		
+	
+		try {
+			System.out.print("Please enter Email: ");
+			String email = in.readLine();
 
-		System.out.print("Please enter Email: ");
-		String email = in.readLine();
+			System.out.print("Please enter Last Name: ");
+			String lname = in.readLine();
 
-		System.out.print("Please enter Last Name: ");
-		String lname = in.readLine();
+			System.out.print("Please Enter First name: ");
+			String fname = in.readLine();
 
-		System.out.print("Please Enter First name: ");
-		String fname = in.readLine();
+			System.out.print("Please Enter Phone Number: ");
+			String phone = in.readLine();
 
-		System.out.print("Please Enter Phone Number: ");
-		String phone = in.readLine();
+			System.out.print("Enter Password");
+			String pwd = in.readLine();
 
-		System.out.print("Enter Password");
-		String pwd = in.readLine();
-
-		String query = String.format("INSERT INTO USER (email, lname, fname, phone, pwd) VALUES (%s ,'%s', '%s', '%d', '%s')", email, lname, fname, phone, pwd);
-		esql.executeUpdate(query);
+			String query = String.format("INSERT INTO USER (email, lname, fname, phone, pwd) VALUES (%s ,'%s', '%s', '%d', '%s')", email, lname, fname, phone, pwd);
+			esql.executeUpdate(query);
+		}catch(Exception err) {
+			System.err.println(err.getMessage());
+		}
 
 	}
 	
