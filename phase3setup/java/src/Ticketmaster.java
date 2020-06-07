@@ -323,10 +323,12 @@ public class Ticketmaster{
 
 			System.out.print("Please Enter First name: ");
 			String fname = in.readLine();
-
+			try{
 				System.out.print("Please Enter Phone Number: ");
 				int phone = Integer.parseInt(in.readLine());
-			
+			}catch(NumerFormatException er) {
+				System.err.println(er.getMessage());
+			}
 
 			System.out.print("Enter Password: ");
 			String pwd = in.readLine();
