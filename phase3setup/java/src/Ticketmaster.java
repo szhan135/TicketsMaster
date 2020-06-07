@@ -331,7 +331,6 @@ public class Ticketmaster{
 			String pwd = in.readLine();
 
 			String query = String.format("INSERT INTO Users (email, lname, fname, phone, pwd) VALUES ('%s' ,'%s', '%s', %d, '%s')", email, lname, fname, phone, pwd);
-			System.out.print(query);
 			esql.executeUpdate(query);
 		}catch(Exception err) {
 			System.err.println(err.getMessage());
@@ -340,7 +339,20 @@ public class Ticketmaster{
 	}
 	
 	public static void AddBooking(Ticketmaster esql){//2
-		
+		try{
+			String bookingID = esql.executeQueryAndReturnResult(bookingID);
+			System.out.print("Booking ID: " + Integer.toString(bookingID));
+
+			System.out.print("Enter User Email: ");
+			String email = in.readLine();
+
+			int row = esql.executeQueryAndReturnResult("Select email from Users where email = " + email);
+			while(row = 0) {
+				System.out.print("Invalid email, Enter User Email: ");
+				email = in.readLine();
+				rows = esql.executeQueryAndReturnResult("Select email from Users where email = " + email);
+			}
+		}
 	}
 	
 	public static void AddMovieShowingToTheater(Ticketmaster esql){//3
