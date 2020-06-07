@@ -314,7 +314,7 @@ public class Ticketmaster{
 	
 	public static void AddUser(Ticketmaster esql){//1
 	
-		try {
+		//try {
 			System.out.print("Please enter Email: ");
 			String email = in.readLine();
 
@@ -331,10 +331,11 @@ public class Ticketmaster{
 			String pwd = in.readLine();
 
 			String query = String.format("INSERT INTO Users (email, lname, fname, phone, pwd) VALUES ('%s' ,'%s', '%s', %d, '%s')", email, lname, fname, phone, pwd);
+			System.out.print(query);
 			esql.executeUpdate(query);
-		}catch(Exception err) {
-			System.err.println(err.getMessage());
-		}
+		//}catch(Exception err) {
+		//	System.err.println(err.getMessage());
+		//}
 
 	}
 	
