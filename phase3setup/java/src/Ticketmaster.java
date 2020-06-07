@@ -325,8 +325,7 @@ public class Ticketmaster{
 			String fname = in.readLine();
 
 				System.out.print("Please Enter Phone Number: ");
-				String phonenum = in.readLine();
-				int phone = Integer.parseInt(phonenum);
+				int phone = Integer.parseInt(in.readLine());
 			
 
 			System.out.print("Enter Password: ");
