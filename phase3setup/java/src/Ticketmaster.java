@@ -349,7 +349,7 @@ public class Ticketmaster{
 			String email = in.readLine();
 
 			int row = (esql.executeQueryAndReturnResult("Select email from Users where email = " + email)).size();
-			while(row = 0) {
+			while(row == 0) {
 				System.out.print("Invalid email, Enter User Email: ");
 				email = in.readLine();
 				rows = (esql.executeQueryAndReturnResult("Select email from Users where email = " + email)).size();
