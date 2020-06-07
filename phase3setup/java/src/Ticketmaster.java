@@ -329,10 +329,10 @@ public class Ticketmaster{
 				int phone = Integer.parseInt(phonenum);
 			
 
-			System.out.print("Enter Password");
+			System.out.print("Enter Password: ");
 			String pwd = in.readLine();
 
-			String query = String.format("INSERT INTO Users (email, lname, fname, phone, pwd) VALUES (%s ,'%s', '%s', '%d', '%s')", email, lname, fname, phone, pwd);
+			String query = String.format("INSERT INTO Users (email, lname, fname, phone, pwd) VALUES ('%s' ,'%s', '%s', %d, '%s')", email, lname, fname, phone, pwd);
 			esql.executeUpdate(query);
 		}catch(Exception err) {
 			System.err.println(err.getMessage());
