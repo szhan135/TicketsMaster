@@ -340,8 +340,13 @@ public class Ticketmaster{
 	
 	public static void AddBooking(Ticketmaster esql){//2
 		try{
-			int bookingID = esql.executeQueryAndReturnResult("Select * from Booking");
-			System.out.print("Booking ID: " + Integer.toString(bookingID));
+			List <List<String>> data = esql.executeQueryAndReturnResult("Select bid from Bookings");
+
+			int bid = data.size() + 1;
+
+			System.out.print("Booking ID: " + Integer.toString(bid));
+
+			/*
 
 			System.out.print("Enter User Email: ");
 			String email = in.readLine();
@@ -352,6 +357,7 @@ public class Ticketmaster{
 				email = in.readLine();
 				rows = esql.executeQueryAndReturnResult("Select email from Users where email = " + email);
 			}
+			*/
 		}catch (Exception err) {
 			System.err.println(err.getMessage());
 		}
