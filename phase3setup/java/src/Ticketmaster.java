@@ -326,7 +326,7 @@ public class Ticketmaster{
 			try{
 				System.out.print("Please Enter Phone Number: ");
 				int phone = Integer.parseInt(in.readLine());
-			}catch(NumerFormatException er) {
+			}catch(NumberFormatException er) {
 				System.err.println(er.getMessage());
 			}
 
