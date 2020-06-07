@@ -322,13 +322,13 @@ public class Ticketmaster{
 		String lname = in.readLine();
 
 		System.out.print("Please Enter First name: ");
-		System fname = in.readLine();
+		String fname = in.readLine();
 
 		System.out.print("Please Enter Phone Number: ");
-		System phone = in.readLine();
+		String phone = in.readLine();
 
 		System.out.print("Enter Password");
-		System pwd = in.readLine();
+		String pwd = in.readLine();
 
 		String query = String.format("INSERT INTO USER (email, lname, fname, phone, pwd) VALUES (%s ,'%s', '%s', '%d', '%s')", email, lname, fname, phone, pwd);
 		esql.executeUpdate(query);
