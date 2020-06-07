@@ -343,13 +343,14 @@ public class Ticketmaster{
 			List <List<String>> data = esql.executeQueryAndReturnResult("Select bid from Bookings");
 
 			int bid = data.size() + 1;
-			System.out.print("Booking ID: " + Integer.toString(bid));
+			System.out.print("Booking ID: " + Integer.toString(bid) + "\n" );
 
 			System.out.print("Enter User Email: ");
 			String email = in.readLine();
-
-			int row = (esql.executeQueryAndReturnResult("Select email from Users where email = \"" + email + "\"")).size();
+			
 			System.out.print("Select email from Users where email = \"" + email + "\"");
+			int row = (esql.executeQueryAndReturnResult("Select email from Users where email = \"" + email + "\"")).size();
+			
 			while(row == 0) {
 				System.out.print("Invalid email, Enter User Email: ");
 				email = in.readLine();
