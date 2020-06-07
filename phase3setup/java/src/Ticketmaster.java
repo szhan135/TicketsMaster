@@ -314,6 +314,25 @@ public class Ticketmaster{
 	
 	public static void AddUser(Ticketmaster esql){//1
 		
+
+		System.out.print("Please enter Email: ");
+		String email = in.readLine();
+
+		System.out.print("Please enter Last Name: ");
+		String lname = in.readLine();
+
+		System.out.print("Please Enter First name: ");
+		System fname = in.readLine();
+
+		System.out.print("Please Enter Phone Number: ");
+		System phone = in.readLine();
+
+		System.out.print("Enter Password");
+		System pwd = in.readLine();
+
+		String query = String.format("INSERT INTO USER (email, lname, fname, phone, pwd) VALUES (%s ,'%s', '%s', '%d', '%s')", email, lname, fname, phone, pwd);
+		esql.executeUpdate(query);
+
 	}
 	
 	public static void AddBooking(Ticketmaster esql){//2
