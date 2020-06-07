@@ -314,7 +314,7 @@ public class Ticketmaster{
 	
 	public static void AddUser(Ticketmaster esql){//1
 	
-		/try {
+		try {
 			System.out.print("Please enter Email: ");
 			String email = in.readLine();
 
