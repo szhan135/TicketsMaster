@@ -352,6 +352,8 @@ public class Ticketmaster{
 				email = in.readLine();
 				rows = esql.executeQueryAndReturnResult("Select email from Users where email = " + email);
 			}
+		}catch (Exception err) {
+			System.err.println(err.getMessage());
 		}
 	}
 	
