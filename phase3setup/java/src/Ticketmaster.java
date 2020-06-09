@@ -495,6 +495,7 @@ public class Ticketmaster{
 			}
 
 			esql.executeUpdate("Delete From Payments where bid = " + bid);
+			esql.executeUpdate("Update Bookings SET status = 'Cancelled' where bid = " +bid);
 		}catch(Exception err) {
 			System.err.println(err.getMessage());
 		}
