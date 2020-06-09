@@ -422,7 +422,7 @@ public class Ticketmaster{
 				String ssid = in.readLine();
 				row = 0;
 				while(row == 0) {
-					rows = (esql.executeQueryAndReturnResult("Select ssid from ShowSeats WHERE ssid = " + ssid + " AND sid = " + sid)).size();
+					row = (esql.executeQueryAndReturnResult("Select ssid from ShowSeats WHERE ssid = " + ssid + " AND sid = " + sid)).size();
 				}
 				esql.executeUpdate("Update ShowSeats SET bid = " + bid + " WHERE ssid = " + ssid + " AND sid = " + sid);
 
