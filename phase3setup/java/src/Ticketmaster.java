@@ -334,6 +334,7 @@ public class Ticketmaster{
 
 			String query = String.format("INSERT INTO Users (email, lname, fname, phone, pwd) VALUES ('%s' ,'%s', '%s', %d, '%s')", email, lname, fname, phone, pwd);
 			esql.executeUpdate(query);
+			System.out.print("Account Created Successfully\n")
 		}catch(Exception err) {
 			System.err.println(err.getMessage());
 		}
@@ -360,6 +361,27 @@ public class Ticketmaster{
 				row = (esql.executeQueryAndReturnResult("Select email from Users where email = \'" + email + "\'")).size();
 			}
 
+			//ENTERING CINEMA and THEATER ID ==========================================================================================================================
+			System.out.print("Enter Cinema ID: ");
+			String cid = in.readLine();
+
+			System.out.print("Enter Theater ID: ");
+			String tid = in.readLine();
+
+			row = (esql.executeQueryAndReturnResult("Select tid from Theaters where tid = \'" + tid + "\' AND cid = \'" + cid + "\'" )).size();
+
+			while(row == 0) {
+				System.out.print("Invalid Cinema ID or Theater ID. \n");
+
+				System.out.print("Enter Cinema ID: ");
+				cid = in.readLine();
+
+				System.out.print("Enter Theater ID: ");
+				tid = in.readLine();
+
+				row = (esql.executeQueryAndReturnResult("Select tid from Theaters where tid = \'" + tid + "\' AND cid = \'" + cid + "\'" )).size();
+			}
+
 			//ENTERTING MOVIE ID AND SHOW ID =========================================================================================================================
 			System.out.print("Enter show ID: ");
 			String sid = in.readLine();
@@ -381,26 +403,14 @@ public class Ticketmaster{
 				row = (esql.executeQueryAndReturnResult("Select sid from Shows where sid = \'" + sid + "\' AND mvid = \'" + mvid + "\'" )).size();
 			}
 
-			//ENTERING CINEMA ID =====================================================================================================================================
-			System.out.print("Enter Cinema ID: ");
-			String cid = in.readLine();
-
-			System.out.print("Enter Theater ID: ");
-			String tid = in.readLine();
-
-			row = (esql.executeQueryAndReturnResult("Select tid from Theaters where tid = \'" + tid + "\' AND cid = \'" + cid + "\'" )).size();
-
-			while(row == 0) {
-				System.out.print("Invalid Cinema ID or Theater ID. \n");
-
-				System.out.print("Enter Cinema ID: ");
-				cid = in.readLine();
-
-				System.out.print("Enter Theater ID: ");
-				tid = in.readLine();
-
-				row = (esql.executeQueryAndReturnResult("Select tid from Theaters where tid = \'" + tid + "\' AND cid = \'" + cid + "\'" )).size();
+			//Checks if the theater plays that show =====================================================================================================================
+			row = (esql.executeQueryAndReturnResult("Select sid from Plays where sid = \'" + sid + "\' AND tid = \'" + tid + "\'" )).size();
+			if(row == 0) {
+				System.out.print("Show ID and Theater ID does not match. Please try again. \n")
+				return;
 			}
+
+
 
 			//ENTERING Number of SEATS ==================================================================================================================================
 			int seats = 0;
