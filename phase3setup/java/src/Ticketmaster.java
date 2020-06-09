@@ -432,11 +432,14 @@ public class Ticketmaster{
 			while(count <= seats) {
 				System.out.print("Enter Show Seat ID for Seat #" + count + ": ");
 				String ssid = in.readLine();
-				row = 0;
+
+				System.out.print("Select ssid from ShowSeats where ssid = " + ssid + " AND sid = " + sid + "\n");
+				row = (esql.executeQueryAndReturnResult("Select ssid from ShowSeats where ssid = " + ssid + " AND sid = " + sid)).size();
+
 				while(row == 0) {
+					System.out.print("Invalid Show Seat ID.\n");
 					System.out.print("Select ssid from ShowSeats where ssid = " + ssid + " AND sid = " + sid + "\n");
 					row = (esql.executeQueryAndReturnResult("Select ssid from ShowSeats where ssid = " + ssid + " AND sid = " + sid)).size();
-					System.out.print("Invalid Show Seat ID.\n");
 					System.out.print("Enter Show Seat ID for Seat #" + count + ": ");
 					ssid = in.readLine();
 				}
