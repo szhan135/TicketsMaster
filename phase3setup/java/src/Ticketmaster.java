@@ -348,7 +348,7 @@ public class Ticketmaster{
 			int bid = data.size() + 1;
 			System.out.print("Booking ID: " + Integer.toString(bid) + "\n" );
 
-			//ENTERING USER EMAIL
+			//ENTERING USER EMAIL ====================================================================================================================================
 			System.out.print("Enter User Email: ");
 			String email = in.readLine();
 			
@@ -360,7 +360,7 @@ public class Ticketmaster{
 				row = (esql.executeQueryAndReturnResult("Select email from Users where email = \'" + email + "\'")).size();
 			}
 
-			//ENTERTING MOVIE ID AND SHOW ID
+			//ENTERTING MOVIE ID AND SHOW ID =========================================================================================================================
 			System.out.print("Enter show ID: ");
 			String sid = in.readLine();
 
@@ -370,7 +370,7 @@ public class Ticketmaster{
 			row = (esql.executeQueryAndReturnResult("Select sid from Shows where sid = \'" + sid + "\' AND mvid = \'" + mvid + "\'" )).size();
 
 			while(row == 0) {
-				System.out.print("Invalid Show ID or Movie ID. \n");
+				System.out.print("Invalid Movie ID or Movie ID. \n");
 
 				System.out.print("Enter show ID: ");
 				sid = in.readLine();
@@ -381,7 +381,28 @@ public class Ticketmaster{
 				row = (esql.executeQueryAndReturnResult("Select sid from Shows where sid = \'" + sid + "\' AND mvid = \'" + mvid + "\'" )).size();
 			}
 
-			//ENTERING Number of SEATS
+			//ENTERING CINEMA ID =====================================================================================================================================
+			System.out.print("Enter Cinema ID: ");
+			String cid = in.readLine();
+
+			System.out.print("Enter Theater ID: ");
+			String tid = in.readLine();
+
+			row = (esql.executeQueryAndReturnResult("Select tid from Theaters where tid = \'" + tid + "\' AND cid = \'" + cid + "\'" )).size();
+
+			while(row == 0) {
+				System.out.print("Invalid Cinema ID or Theater ID. \n");
+
+				System.out.print("Enter Cinema ID: ");
+				String cid = in.readLine();
+
+				System.out.print("Enter Theater ID: ");
+				String tid = in.readLine();
+
+				row = (esql.executeQueryAndReturnResult("Select tid from Theaters where tid = \'" + tid + "\' AND cid = \'" + cid + "\'" )).size();
+			}
+
+			//ENTERING Number of SEATS ==================================================================================================================================
 			int seats = 0;
 			System.out.print("Enter Number of Seats: ");
 			while(seats == 0) {
@@ -393,19 +414,24 @@ public class Ticketmaster{
 				}
 			}
 
-			int count = seats;
+			int count = 1;
 
-			//ENTERING SHOW SEAT ID
-			while(count > 0) {
-				System.out.print("Enter Show Seat ID: ");
-				string 
+			//ENTERING SHOW SEAT ID =====================================================================================================================================
+			while(count <= seats) {
+				System.out.print("Enter Show Seat ID for Seat #" + count + ": ");
+				String ssid = in.readLine();
+				rows = 0;
+				while(rows == 0) {
+					rows = (esql.executeQueryAndReturnResult("Select ssid from ShowSeats WHERE ssid = " + ssid + " AND sid = " + sid)).size();
+				}
+				esql.executeUpdate("Update ShowSeats SET bid = " + bid + " WHERE ssid = " + ssid + " AND sid = " + sid);
 
 				count--;
 			}
 
 
 
-			//CREATING BOOKING TIMESTAMP
+			//CREATING BOOKING TIMESTAMP =================================================================================================================================
 			String time = new SimpleDateFormat("MM/DD/YYYY HH:mm").format(new Date());
 			System.out.print("Booking created at time: " + time + "\n");
 			
