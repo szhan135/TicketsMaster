@@ -335,6 +335,7 @@ public class Ticketmaster{
 			String query = String.format("INSERT INTO Users (email, lname, fname, phone, pwd) VALUES ('%s' ,'%s', '%s', %d, '%s')", email, lname, fname, phone, pwd);
 			esql.executeUpdate(query);
 			System.out.print("Account Created Successfully\n");
+			System.out.print("========================================================\n");
 		}catch(Exception err) {
 			System.err.println(err.getMessage());
 		}
@@ -407,6 +408,7 @@ public class Ticketmaster{
 			row = (esql.executeQueryAndReturnResult("Select sid from Plays where sid = \'" + sid + "\' AND tid = \'" + tid + "\'" )).size();
 			if(row == 0) {
 				System.out.print("Show ID and Theater ID does not match. Please try again. \n");
+				System.out.print("========================================================\n");
 				return;
 			}
 
@@ -436,7 +438,7 @@ public class Ticketmaster{
 				}
 				esql.executeUpdate("Update ShowSeats SET bid = " + bid + " WHERE ssid = " + ssid + " AND sid = " + sid);
 
-				count--;
+				count++;
 			}
 
 
