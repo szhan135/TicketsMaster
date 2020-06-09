@@ -431,9 +431,9 @@ public class Ticketmaster{
 			//CREATING BOOKING ==========================================================================================================================================
 						String time = new SimpleDateFormat("MM/DD/YYYY HH:mm").format(new Date());
 						System.out.print("Booking created at time: " + time + "\n");
-						String temp = String.format("Insert into Bookings VALUES (%d, %s, %s, %d, %s, %s)", bid, "pending", time, seats, sid, email);
-						esql.executeUpdate(temp);
-						System.out.print(temp);
+						//String temp = String.format("Insert into Bookings VALUES (%d, %s, %s, %d, %s, %s)", bid, "pending", time, seats, sid, email);
+						//esql.executeUpdate(temp);
+						//System.out.print(temp);
 
 			//ENTERING SHOW SEAT ID =====================================================================================================================================
 			while(count <= seats) {
