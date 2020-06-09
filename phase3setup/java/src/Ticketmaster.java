@@ -431,7 +431,7 @@ public class Ticketmaster{
 
 			//CREATING BOOKING ==========================================================================================================================================
 						String time = new SimpleDateFormat("MM/dd/YYYY HH:mm").format(new Date());
-						String temp = String.format("Insert into Bookings VALUES (%d, '%s', '%s', %d, '%s', '%s')", bid, "pending", time, seats, sid, email);
+						String temp = String.format("Insert into Bookings VALUES (%d, '%s', '%s', %d, '%s', '%s')", bid, "Pending", time, seats, sid, email);
 						esql.executeUpdate(temp);
 
 			//ENTERING SHOW SEAT ID =====================================================================================================================================
@@ -468,8 +468,8 @@ public class Ticketmaster{
 	
 	public static void CancelPendingBookings(Ticketmaster esql){//4
 		try {
-			esql.executeUpdate("Update ShowSeats SET bid = NULL where bid = (select bid from bookings where status = 'pending')");
-			esql.executeUpdate("Update Bookings SET status = 'cancelled' where status = 'pending' ");
+			esql.executeUpdate("Update ShowSeats SET bid = NULL where bid = (select bid from bookings where status = 'Pending')");
+			esql.executeUpdate("Update Bookings SET status = 'Cancelled' where status = 'Pending' ");
 			System.out.print("Cancelled all pending bookings\n");
 			System.out.print("========================================================\n");
 		}catch(Exception err) {
@@ -486,12 +486,12 @@ public class Ticketmaster{
 			System.out.print("Please Enter Booking ID that you would like to cancel: ");
 			String bid = in.readLine();
 
-			int row = esql.executeQueryAndReturnResult("Select bid from bookings where status = 'paid' AND bid = " + bid).size();
+			int row = esql.executeQueryAndReturnResult("Select bid from bookings where status = 'Paid' AND bid = " + bid).size();
 			while(row == 0) {
 				System.out.print("Invalid Booking ID.\n");
 				System.out.print("Please Enter Booking ID that you would like to cancel: ");
 				bid = in.readLine();
-				row = esql.executeQueryAndReturnResult("Select bid from bookings where status = 'paid' AND bid = " + bid).size();
+				row = esql.executeQueryAndReturnResult("Select bid from bookings where status = 'Paid' AND bid = " + bid).size();
 			}
 
 			esql.executeUpdate("Delete From Payments where bid = " + bid);
