@@ -485,12 +485,12 @@ public class Ticketmaster{
 		System.out.print("Please Enter Booking ID that you would like to cancel: ");
 		String bid = in.readLine();
 
-		int row = esql.executeQueryAndReturnResult("Select bid from bookings where status = 'paid' AND bid = " + bid);
+		int row = esql.executeQueryAndReturnResult("Select bid from bookings where status = 'paid' AND bid = " + bid).size();
 		while(row == 0) {
 			System.out.print("Invalid Booking ID.\n");
 			System.out.print("Please Enter Booking ID that you would like to cancel: ");
 			bid = in.readLine();
-			row = esql.executeQueryAndReturnResult("Select bid from bookings where status = 'paid' AND bid = " + bid);
+			row = esql.executeQueryAndReturnResult("Select bid from bookings where status = 'paid' AND bid = " + bid).size();
 		}
 
 		esql.executeUpdate("Delete From Payments where bid = " + bid);
