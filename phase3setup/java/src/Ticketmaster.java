@@ -467,7 +467,7 @@ public class Ticketmaster{
 	public static void CancelPendingBookings(Ticketmaster esql){//4
 		try {
 			List<List<String>> data = esql.executeQueryAndReturnResult("Select bid from Bookings where status = 'pending'");
-			System.out.print(data.get(0));
+			System.out.print((data.get(0)).get(0));
 			esql.executeUpdate("Update Bookings SET status = 'cancelled' where status = 'pending' ");
 			esql.executeUpdate("Update ShowSeats SET bid = '' where status = 'pending' ");
 			System.out.print("Cancelled all pending bookings\n");
