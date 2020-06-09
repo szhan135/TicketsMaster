@@ -435,6 +435,9 @@ public class Ticketmaster{
 				row = 0;
 				while(row == 0) {
 					row = (esql.executeQueryAndReturnResult("Select ssid from ShowSeats WHERE ssid = " + ssid + " AND sid = " + sid)).size();
+					System.out.print("Invalid Show Seat ID.\n");
+					System.out.print("Enter Show Seat ID for Seat #" + count + ": ");
+					ssid = in.readLine();
 				}
 				esql.executeUpdate("Update ShowSeats SET bid = " + bid + " WHERE ssid = " + ssid + " AND sid = " + sid);
 
