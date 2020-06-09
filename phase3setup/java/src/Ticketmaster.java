@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.math.BigDecimal;
 
 /**
  * This class defines a simple embedded SQL utility class that is designed to
@@ -327,12 +328,12 @@ public class Ticketmaster{
 			String fname = in.readLine();
 
 			System.out.print("Please Enter Phone Number: ");
-			int phone = Integer.parseInt(in.readLine());
+			BigDecimal phone = new BigDecimal(in.readLine());
 
 			System.out.print("Enter Password: ");
 			String pwd = in.readLine();
 
-			String query = String.format("INSERT INTO Users (email, lname, fname, phone, pwd) VALUES ('%s' ,'%s', '%s', %d, '%s')", email, lname, fname, phone, pwd);
+			String query = String.format("INSERT INTO Users (email, lname, fname, phone, pwd) VALUES ('%s' ,'%s', '%s', %.2f, '%s')", email, lname, fname, phone, pwd);
 			esql.executeUpdate(query);
 			System.out.print("Account Created Successfully\n");
 			System.out.print("========================================================\n");
@@ -452,6 +453,7 @@ public class Ticketmaster{
 			}
 
 			System.out.print("Booking created at time: " + time + "\n");
+			System.out.print("========================================================\n");
 
 			
 			
@@ -469,6 +471,7 @@ public class Ticketmaster{
 			esql.executeUpdate("Update ShowSeats SET bid = NULL where bid = (select bid from bookings where status = 'pending')");
 			esql.executeUpdate("Update Bookings SET status = 'cancelled' where status = 'pending' ");
 			System.out.print("Cancelled all pending bookings\n");
+			System.out.print("========================================================\n");
 		}catch(Exception err) {
 			System.err.println(err.getMessage());
 		}
@@ -479,7 +482,11 @@ public class Ticketmaster{
 	}
 	
 	public static void RemovePayment(Ticketmaster esql){//6
-		
+		System.out.print("Please Enter Booking ID that you would like to cancel: ");
+		String bid = in.readLine();
+
+		esql.executeQ
+
 	}
 	
 	public static void ClearCancelledBookings(Ticketmaster esql){//7
