@@ -442,7 +442,7 @@ public class Ticketmaster{
 
 				while(row == 0) {
 					System.out.print("Invalid Show Seat ID.\n");
-					row = (esql.executeQueryAndReturnResult("Select ssid from ShowSeats where ssid = " + ssid + " AND sid = " + sid)).size();
+					row = (esql.executeQueryAndReturnResult("Select ssid from ShowSeats where ssid = " + ssid + " AND sid = " + sid  + " AND bid IS NULL")).size();
 					System.out.print("Enter Show Seat ID for Seat #" + count + ": ");
 					ssid = in.readLine();
 				}
