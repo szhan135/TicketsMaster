@@ -358,8 +358,17 @@ public class Ticketmaster{
 				row = (esql.executeQueryAndReturnResult("Select email from Users where email = \'" + email + "\'")).size();
 			}
 
-			String time = new SimpleDateFormat("MM.DD.YYYY HH.mm").format(new Date());
-			System.out.print(time);
+			System.out.print("Enter show ID: ");
+			String sid = in.readLine();
+
+			System.out.print("Enter Movie ID: ");
+			String mvid = in.readLine();
+
+			System.out.print("Select sid from Shows where sid = \'" + sid + "\' AND mvid = \'" + mvid + "\'");
+			row = (esql.executeQueryAndReturnResult("Select sid from Shows where sid = \'" + sid + "\' AND mvid = \'" + mvid + "\'" )).size();
+
+			String time = new SimpleDateFormat("MM/DD/YYYY HH:mm").format(new Date());
+			System.out.print("Booking created at time: " + time + "\n");
 			
 		}catch (Exception err) {
 			System.err.println(err.getMessage());
