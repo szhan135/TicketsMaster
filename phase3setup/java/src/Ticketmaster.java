@@ -428,11 +428,20 @@ public class Ticketmaster{
 			}
 
 			int count = 1;
+			
+			//Entering Booking status ===================================================================================================================================
+			System.out.print("Enter Booking status (Pending/Paid): ")
+			String status = in.readLine();
+			while(status != "Pending" || status != "Paid") {
+				System.out.print("Invalid status.\n");
+				System.out.print("Enter Booking status (Pending/Paid): ")
+				String status = in.readLine();
+			}
 
 			//CREATING BOOKING ==========================================================================================================================================
-						String time = new SimpleDateFormat("MM/dd/YYYY HH:mm").format(new Date());
-						String temp = String.format("Insert into Bookings VALUES (%d, '%s', '%s', %d, '%s', '%s')", bid, "Pending", time, seats, sid, email);
-						esql.executeUpdate(temp);
+			String time = new SimpleDateFormat("MM/dd/YYYY HH:mm").format(new Date());
+			String temp = String.format("Insert into Bookings VALUES (%d, '%s', '%s', %d, '%s', '%s')", bid, status, time, seats, sid, email);
+			esql.executeUpdate(temp);
 
 			//ENTERING SHOW SEAT ID =====================================================================================================================================
 			while(count <= seats) {
