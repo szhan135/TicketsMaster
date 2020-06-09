@@ -438,7 +438,7 @@ public class Ticketmaster{
 				System.out.print("Enter Show Seat ID for Seat #" + count + ": ");
 				String ssid = in.readLine();
 
-				row = (esql.executeQueryAndReturnResult("Select ssid from ShowSeats where ssid = " + ssid + " AND sid = " + sid)).size();
+				row = (esql.executeQueryAndReturnResult("Select ssid from ShowSeats where ssid = " + ssid + " AND sid = " + sid + " AND bid IS NULL")).size();
 
 				while(row == 0) {
 					System.out.print("Invalid Show Seat ID.\n");
@@ -467,9 +467,8 @@ public class Ticketmaster{
 	public static void CancelPendingBookings(Ticketmaster esql){//4
 		try {
 			List<List<String>> data = esql.executeQueryAndReturnResult("Select bid from Bookings where status = 'pending'");
-			System.out.print((data.get(0)).get(0));
 			esql.executeUpdate("Update Bookings SET status = 'cancelled' where status = 'pending' ");
-			esql.executeUpdate("Update ShowSeats SET bid = '' where status = 'pending' ");
+			esql.executeUpdate("Update ShowSeats SET bid = '' where (");
 			System.out.print("Cancelled all pending bookings\n");
 		}catch(Exception err) {
 			System.err.println(err.getMessage());
