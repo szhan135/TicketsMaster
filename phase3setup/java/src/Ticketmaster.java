@@ -430,10 +430,8 @@ public class Ticketmaster{
 
 			//CREATING BOOKING ==========================================================================================================================================
 						String time = new SimpleDateFormat("MM/dd/YYYY HH:mm").format(new Date());
-						System.out.print("Booking created at time: " + time + "\n");
 						String temp = String.format("Insert into Bookings VALUES (%d, '%s', '%s', %d, '%s', '%s')", bid, "pending", time, seats, sid, email);
 						esql.executeUpdate(temp);
-						System.out.print(temp);
 
 			//ENTERING SHOW SEAT ID =====================================================================================================================================
 			while(count <= seats) {
@@ -453,7 +451,7 @@ public class Ticketmaster{
 				count++;
 			}
 
-
+			System.out.print("Booking created at time: " + time + "\n");
 
 			
 			
@@ -468,7 +466,8 @@ public class Ticketmaster{
 	
 	public static void CancelPendingBookings(Ticketmaster esql){//4
 		try {
-			esql.executeQueryAndPrintResult("Select bid from Bookings where status = 'pending'");
+			List<List<String>> data = esql.executeQueryAndReturnResult("Select bid from Bookings where status = 'pending'");
+			System.out.print(data.get(0).get(0));
 			esql.executeUpdate("Update Bookings SET status = 'cancelled' where status = 'pending' ");
 			esql.executeUpdate("Update ShowSeats SET bid = '' where status = 'pending' ");
 			System.out.print("Cancelled all pending bookings\n");
