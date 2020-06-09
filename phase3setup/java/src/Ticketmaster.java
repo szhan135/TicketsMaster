@@ -430,11 +430,11 @@ public class Ticketmaster{
 			int count = 1;
 			
 			//Entering Booking status ===================================================================================================================================
-			System.out.print("Enter Booking status (Pending/Paid): ")
+			System.out.print("Enter Booking status (Pending/Paid): ");
 			String status = in.readLine();
 			while(status != "Pending" || status != "Paid") {
 				System.out.print("Invalid status.\n");
-				System.out.print("Enter Booking status (Pending/Paid): ")
+				System.out.print("Enter Booking status (Pending/Paid): ");
 				String status = in.readLine();
 			}
 
