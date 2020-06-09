@@ -394,10 +394,10 @@ public class Ticketmaster{
 				System.out.print("Invalid Cinema ID or Theater ID. \n");
 
 				System.out.print("Enter Cinema ID: ");
-				String cid = in.readLine();
+				cid = in.readLine();
 
 				System.out.print("Enter Theater ID: ");
-				String tid = in.readLine();
+				tid = in.readLine();
 
 				row = (esql.executeQueryAndReturnResult("Select tid from Theaters where tid = \'" + tid + "\' AND cid = \'" + cid + "\'" )).size();
 			}
@@ -420,8 +420,8 @@ public class Ticketmaster{
 			while(count <= seats) {
 				System.out.print("Enter Show Seat ID for Seat #" + count + ": ");
 				String ssid = in.readLine();
-				rows = 0;
-				while(rows == 0) {
+				row = 0;
+				while(row == 0) {
 					rows = (esql.executeQueryAndReturnResult("Select ssid from ShowSeats WHERE ssid = " + ssid + " AND sid = " + sid)).size();
 				}
 				esql.executeUpdate("Update ShowSeats SET bid = " + bid + " WHERE ssid = " + ssid + " AND sid = " + sid);
