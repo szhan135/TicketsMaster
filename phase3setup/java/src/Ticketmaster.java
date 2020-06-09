@@ -428,6 +428,12 @@ public class Ticketmaster{
 
 			int count = 1;
 
+			//CREATING BOOKING ==========================================================================================================================================
+						String time = new SimpleDateFormat("MM/DD/YYYY HH:mm").format(new Date());
+						System.out.print("Booking created at time: " + time + "\n");
+						esql.executeUpdate("Insert into Bookings VALUES (%d, %s, %s, %d, %s, %s)", bid, "pending", time, seats, sid, email);
+						System.out.print("Insert into Bookings VALUES (%d, %s, %s, %d, %s, %s)", bid, "pending", time, seats, sid, email);
+
 			//ENTERING SHOW SEAT ID =====================================================================================================================================
 			while(count <= seats) {
 				System.out.print("Enter Show Seat ID for Seat #" + count + ": ");
@@ -448,9 +454,7 @@ public class Ticketmaster{
 
 
 
-			//CREATING BOOKING TIMESTAMP =================================================================================================================================
-			String time = new SimpleDateFormat("MM/DD/YYYY HH:mm").format(new Date());
-			System.out.print("Booking created at time: " + time + "\n");
+			
 			
 		}catch (Exception err) {
 			System.err.println(err.getMessage());
