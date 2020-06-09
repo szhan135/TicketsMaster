@@ -434,6 +434,7 @@ public class Ticketmaster{
 				String ssid = in.readLine();
 				row = 0;
 				while(row == 0) {
+					System.out.print("Current Show ID = " + sid + "\n");
 					row = (esql.executeQueryAndReturnResult("Select ssid from ShowSeats WHERE ssid = " + ssid + " AND sid = " + sid)).size();
 					System.out.print("Invalid Show Seat ID.\n");
 					System.out.print("Enter Show Seat ID for Seat #" + count + ": ");
