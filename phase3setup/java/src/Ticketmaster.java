@@ -485,7 +485,15 @@ public class Ticketmaster{
 		System.out.print("Please Enter Booking ID that you would like to cancel: ");
 		String bid = in.readLine();
 
-		esql.executeQ
+		int row = esql.executeQueryAndReturnResult("Select bid from bookings where status = 'paid' AND bid = " + bid);
+		while(row == 0) {
+			System.out.print("Invalid Booking ID.\n");
+			System.out.print("Please Enter Booking ID that you would like to cancel: ");
+			bid = in.readLine();
+			row = esql.executeQueryAndReturnResult("Select bid from bookings where status = 'paid' AND bid = " + bid);
+		}
+
+		esql.executeUpdate("Delete From Payments where bid = " + bid);
 
 	}
 	
