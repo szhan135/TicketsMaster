@@ -348,7 +348,6 @@ public class Ticketmaster{
 			System.out.print("Enter User Email: ");
 			String email = in.readLine();
 			
-			System.out.print("Select email from Users where email = \"" + email + "\"");
 			int row = (esql.executeQueryAndReturnResult("Select email from Users where email = \'" + email + "\'")).size();
 			
 			while(row == 0) {
@@ -356,6 +355,9 @@ public class Ticketmaster{
 				email = in.readLine();
 				row = (esql.executeQueryAndReturnResult("Select email from Users where email = \'" + email + "\'")).size();
 			}
+
+			String time = new SimpleDateFormat("MM.DD.YYYY HH.mm").format(new Date());
+			System.out.print(time);
 			
 		}catch (Exception err) {
 			System.err.println(err.getMessage());
