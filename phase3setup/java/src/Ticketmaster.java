@@ -564,7 +564,11 @@ public class Ticketmaster{
 	}
 
 	public static void ListMovieTitlesContainingLoveReleasedAfter2010(Ticketmaster esql){//11
-		esql.executeQueryAndPrintResult("Select * from Movies where title LIKE 'Love' AND rdate > '2010-01-01'");
+		try {
+			esql.executeQueryAndPrintResult("Select * from Movies where title LIKE 'Love' AND rdate > '2010-01-01'");
+		}catch(Exception err) {
+			System.err.println(err.getMessage());
+		}
 		
 	}
 
