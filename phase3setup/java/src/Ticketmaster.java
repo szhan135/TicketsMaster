@@ -537,7 +537,7 @@ public class Ticketmaster{
 			System.out.print("Enter Show ID: ");
 			String sid = in.readLine();
 
-			esql.executeQueryAndPrintResult("Select tname from Theaters where tid = (Select tid from Plays where sid = " + sid + " AND tid = (select tid from Cinemas where cid = " + cid + "))")
+			esql.executeQueryAndPrintResult("Select tname from Theaters where tid = (Select tid from Plays where sid = " + sid + " AND tid = (select tid from Cinemas where cid = " + cid + "))");
 
 
 		}catch(Exception err) {
