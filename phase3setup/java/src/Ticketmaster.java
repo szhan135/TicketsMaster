@@ -433,6 +433,7 @@ public class Ticketmaster{
 			System.out.print("Enter Booking status (Pending/Paid)(0/1): ");
 			int stat = Integer.parseInt(in.readLine());
 			String status;
+			System.out.print(stat);
 			while(stat != 1 || stat != 0) {
 				System.out.print("Invalid status.\n");
 				System.out.print("Enter Booking status (Pending/Paid): ");
