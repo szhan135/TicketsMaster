@@ -547,7 +547,19 @@ public class Ticketmaster{
 	}
 	
 	public static void ListShowsStartingOnTimeAndDate(Ticketmaster esql){//10
-		//
+		try{
+			System.out.print("Enter Date (YYYY-MM-DD): ");
+			String sdate = in.readLine();
+			System.out.print("Enter Start Time (HH:MM:SS): ");
+			String sttime = in.readLine();
+
+			esql.executeQueryAndPrintResult("Select * from Shows where sdate = " + sdate + " AND sttime = " + sttime);
+
+
+
+		}catch(Exception err) {
+			System.err.println(err.getMessage());
+		}
 		
 	}
 
