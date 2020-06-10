@@ -432,11 +432,14 @@ public class Ticketmaster{
 			//Entering Booking status ===================================================================================================================================
 			System.out.print("Enter Booking status (Pending/Paid): ");
 			String status = in.readLine();
+			//FIXME
+			/*
 			while(!status.equals("Pending") || !status.equals("Paid")) {
 				System.out.print("Invalid status.\n");
 				System.out.print("Enter Booking status (Pending/Paid): ");
 				status = in.readLine();
 			}
+			*/
 
 			//CREATING BOOKING ==========================================================================================================================================
 			String time = new SimpleDateFormat("MM/dd/YYYY HH:mm").format(new Date());
