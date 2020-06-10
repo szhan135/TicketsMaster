@@ -520,7 +520,7 @@ public class Ticketmaster{
 	
 	public static void ClearCancelledBookings(Ticketmaster esql){//7
 		try {
-		esql.executeUpdate("Delete From Bookings where status = 'Cancelled'");
+			esql.executeUpdate("Delete From Bookings where status = 'Cancelled'");
 		}catch(Exception err) {
 			System.err.println(err.getMessage());
 		}
@@ -531,7 +531,18 @@ public class Ticketmaster{
 	}
 	
 	public static void ListTheatersPlayingShow(Ticketmaster esql){//9
-		//
+		try {
+			System.out.print("Enter Cinema ID: ");
+			String cid = in.readLine();
+			System.out.print("Enter Show ID: ");
+			String sid = in.readLine();
+
+			esql.executeQueryAndPrintResult("Select tname from Theaters where tid = (Select tid from Plays where sid = " + sid + " AND tid = (select tid from Cinemas where cid = " + cid + "))")
+
+
+		}catch(Exception err) {
+			System.err.println(err.getMessage());
+		}
 		
 	}
 	
