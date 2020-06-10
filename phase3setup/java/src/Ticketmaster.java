@@ -509,6 +509,8 @@ public class Ticketmaster{
 			esql.executeUpdate("Delete From Payments where bid = " + bid);
 			esql.executeUpdate("Update Bookings SET status = 'Cancelled' where bid = " + bid);
 			esql.executeUpdate("Update ShowSeats SET bid = NULL where bid = " + bid);
+			System.out.print("Removed Payment\n");
+			System.out.print("========================================================\n");
 
 		}catch(Exception err) {
 			System.err.println(err.getMessage());
@@ -517,7 +519,7 @@ public class Ticketmaster{
 	}
 	
 	public static void ClearCancelledBookings(Ticketmaster esql){//7
-		
+		esql.executeUpdate("Delete From Bookings where status = 'Cancelled'");
 	}
 	
 	public static void RemoveShowsOnDate(Ticketmaster esql){//8
