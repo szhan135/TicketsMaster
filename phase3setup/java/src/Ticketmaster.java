@@ -573,7 +573,11 @@ public class Ticketmaster{
 	}
 
 	public static void ListUsersWithPendingBooking(Ticketmaster esql){//12
-		//
+		try {
+			esql.executeQueryAndPrintResult("Select fname,lname,email from Users where email in (select distinct email from bookings where status = 'Pending');");
+		}catch(Exception err) {
+			System.err.println(err.getMessage());
+		}
 		
 	}
 
