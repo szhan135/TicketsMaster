@@ -429,17 +429,7 @@ public class Ticketmaster{
 
 			int count = 1;
 			
-			//Entering Booking status ===================================================================================================================================
-			System.out.print("Enter Booking status (Pending/Paid): ");
-			String status = in.readLine();
-			//FIXME
-			/*
-			while(!status.equals("Pending") || !status.equals("Paid")) {
-				System.out.print("Invalid status.\n");
-				System.out.print("Enter Booking status (Pending/Paid): ");
-				status = in.readLine();
-			}
-			*/
+			
 
 			//CREATING BOOKING ==========================================================================================================================================
 			String time = new SimpleDateFormat("MM/dd/YYYY HH:mm").format(new Date());
@@ -463,6 +453,18 @@ public class Ticketmaster{
 
 				count++;
 			}
+			
+			//Entering Booking status ===================================================================================================================================
+			System.out.print("Enter Booking status (Pending/Paid): ");
+			String status = in.readLine();
+			//FIXME
+			/*
+			while(!status.equals("Pending") || !status.equals("Paid")) {
+				System.out.print("Invalid status.\n");
+				System.out.print("Enter Booking status (Pending/Paid): ");
+				status = in.readLine();
+			}
+			*/
 
 			System.out.print("Booking created at time: " + time + "\n");
 			System.out.print("========================================================\n");
