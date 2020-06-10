@@ -430,20 +430,12 @@ public class Ticketmaster{
 			int count = 1;
 			
 			//Entering Booking status ===================================================================================================================================
-			System.out.print("Enter Booking status (Pending/Paid)(0/1): ");
-			int stat = Integer.parseInt(in.readLine());
-			String status;
-			System.out.print(stat);
-			while(stat != 1 || stat != 0) {
+			System.out.print("Enter Booking status (Pending/Paid): ");
+			String status = in.readLine();
+			while(!status.equals("Pending") || !status.equals("Paid")) {
 				System.out.print("Invalid status.\n");
 				System.out.print("Enter Booking status (Pending/Paid): ");
-				stat = Integer.parseInt(in.readLine());
-			}
-			if(stat == 1) { 
-				status = "Paid";
-			}
-			else {
-				status = "Pending";
+				status = in.readLine();
 			}
 
 			//CREATING BOOKING ==========================================================================================================================================
