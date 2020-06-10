@@ -553,7 +553,7 @@ public class Ticketmaster{
 			System.out.print("Enter Start Time (HH:MM:SS): ");
 			String sttime = in.readLine();
 
-			esql.executeQueryAndPrintResult("Select * from Shows where sdate = " + sdate + " AND sttime = " + sttime);
+			esql.executeQueryAndPrintResult("Select * from Shows where sdate = '" + sdate + "' AND sttime = '" + sttime + "\'");
 
 
 
