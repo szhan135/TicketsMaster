@@ -476,8 +476,90 @@ public class Ticketmaster{
 		}
 	}
 	
-	public static void AddMovieShowingToTheater(Ticketmaster esql){//3
-		
+	public static void AddMovieShowingToTheater(Ticketmaster esql) throws IOException, SQLException {// 3
+	
+	String title, releaseDate, country, description, lang, genre, sdate, sttime, edtime, q1, q2, q3;
+	int mvid, sid, tid, duration;
+
+	List<List<String>> mvidMax = esql.executeQueryAndReturnResult("select max(mvid) from movies;");
+	mvid = Integer.parseInt(mvidMax.get(0).get(0)) + 1;
+
+	List<List<String>> sidMax = esql.executeQueryAndReturnResult("select max(sid) from shows;");
+	sid = Integer.parseInt(sidMax.get(0).get(0)) + 1;
+
+	System.out.println("**** Movie Information ****");
+	System.out.print("Movie Title: ");
+	title = in.readLine();
+	System.out.println("");
+
+	System.out.print("Release Date(MM/DD/YYYY): ");
+	releaseDate = in.readLine();
+	System.out.println("");
+
+	System.out.print("Country: ");
+	country = in.readLine();
+	System.out.println("");
+
+	System.out.print("Description: ");
+	description = in.readLine();
+	System.out.println("");	
+
+	do {
+		System.out.print("Duration(Seconds): ");
+		try { 
+			duration = Integer.parseInt(in.readLine());
+			break;
+		} catch (Exception e) {
+			System.out.println("Your input is invalid!");
+			continue;
+		}
+	} while (true);
+	System.out.println("");
+
+	System.out.print("Language(2 Letter Abreviation): ");
+	lang = in.readLine();
+	System.out.println("");	
+
+	System.out.print("Genre: ");
+	genre = in.readLine();
+	System.out.println("");	
+
+	System.out.println("**** Show Information ****");
+	System.out.print("Show Date(MM/DD/YYYY): ");
+	sdate = in.readLine();
+	System.out.println("");
+	
+	System.out.print("Start Time(HH:MM): ");
+	sttime = in.readLine();
+	System.out.println("");
+
+	System.out.print("End Time(HH:MM): ");
+	edtime = in.readLine();
+	System.out.println("");
+
+
+	List<List<String>> tidMin = esql.executeQueryAndReturnResult("select min(tid) from theaters;");
+	int tidMIN = Integer.parseInt(tidMin.get(0).get(0));
+
+	List<List<String>> tidMax = esql.executeQueryAndReturnResult("select max(tid) from theaters;");
+	int tidMAX = Integer.parseInt(tidMax.get(0).get(0));
+
+	System.out.print("Theater ID (Between " + tidMIN + " and " + tidMAX + ") : ");
+	tid = Integer.parseInt(in.readLine());
+	System.out.println("");
+
+	q1 = "INSERT INTO Movies (mvid, title, rdate, country, description, duration, lang, genre) values (" 
+	+ mvid + ", '" + title + "', '" + releaseDate + "', '" + country + "', '" + description + "', " + 
+	duration + ", '" + lang + "', '" + genre + "' );";
+	esql.executeUpdate(q1);
+
+	q2 = "INSERT INTO Shows (sid, mvid, sdate, sttime, edtime) values (" + sid + ", " + mvid + ", '" + 
+	sdate + "', '" + sttime + "', '" + edtime + "');";
+	esql.executeUpdate(q2);
+
+	q3 = "INSERT INTO Plays (sid, tid) values (" + sid + ", " + tid + ");";
+	esql.executeUpdate(q3);
+
 	}
 	
 	public static void CancelPendingBookings(Ticketmaster esql){//4
