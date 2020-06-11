@@ -611,7 +611,77 @@ public class Ticketmaster{
 	}
 	
 	public static void RemoveShowsOnDate(Ticketmaster esql){//8
-		
+		String cinema_name;
+        String date;
+        String query;
+        List<String> cname_list = new ArrayList<String>();
+        List<String> tid_list = new ArrayList<String>();
+        List<List<String>> sid_list  = new ArrayList<List<String>>();
+        
+        /* Format:
+                1) Ask User what date they would like to cancel all shows on (store this answer)
+                2) Ask User which cinema they would want to cancel all shows on (store this answer)
+                3) Using these two answers, select all sids that have the given date, obtaining the tids (in Plays.csv)
+                4) Then, using the obtained tids, because they are exactly the same as their cid counterparts, 
+                   we will do a crossreference for the given user cinema selection to cancel all the shows with the given date at the given cinema
+                5) Additionally, we need to cancel all the Bookings on those dates (We can do this using the sids from earlier)
+        */
+        
+        while(true) {
+            System.out.println("Enter the date you'd like to cancel all shows on. (mm/dd/yyyy)");
+            try {
+                date = in.readLine();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+                Date date2 = null;
+                date2 = dateFormat.parse(date);
+                break;
+            } 
+            catch (Exception e) {
+                System.out.println("Your input is invalid! Your exception is: " + e.getMessage());
+            }
+        }
+        try {
+            System.out.println("Enter the name of the specific cinema where you'd like to cancel the shows based on the given date.\nThe cinemas that you can choose from are:");
+            System.out.println("AMC\nGeneral Cinemas\nHarkins\nIMAX Corporation\nRegal Cinemas\nStudio Movie Grill");
+            
+            cinema_name = in.readLine();
+            try {
+                if (cinema_name.equals("AMC") || cinema_name.equals("General Cinemas") || cinema_name.equals("Harkins") || cinema_name.equals("IMAX Corporation") || 
+                    cinema_name.equals("Regal Cinemas") || cinema_name.equals("Studio Movie Grill")) {
+                        query = "SELECT sid FROM Shows WHERE sdate = '" + date + "';";
+                        sid_list = esql.executeQueryAndReturnResult(query); // This is a list of sids given the date
+                        
+                        for (int i = 0; i < sid_list.size(); i++) { // This is a list of tids given the sids
+                            query = "SELECT tid FROM Plays WHERE sid = " + sid_list.get(i).get(0) + ";";
+                            tid_list.add(esql.executeQueryAndReturnResult(query).get(0).get(0));
+                        }
+                        
+                        for (int i = 0; i < tid_list.size(); i++) { // This is a list of cnames given the tids
+                            query = "SELECT cname FROM Cinemas WHERE cid = " + tid_list.get(i) + ";";
+                            cname_list.add(esql.executeQueryAndReturnResult(query).get(0).get(0));
+                        }
+                        
+                        for (int i = 0; i < cname_list.size(); i++) {
+                            if (cinema_name.equals(cname_list.get(i))) {
+                                query = "DELETE FROM Shows WHERE sid = " + sid_list.get(i).get(0) + ";"; // Because the three lists above are aligned, we can do this
+                                esql.executeUpdate(query);
+                                
+                                System.out.println("Shows on " + date + " at " + cinema_name + " successfully removed.");
+                            }
+                        }
+                }
+                else {
+                    System.out.println("Please enter a valid cinema from the list next time.");
+                    return;
+                }
+            }
+            catch (Exception e) {
+                System.out.println("Your input is invalid! Your exception is: " + e.getMessage());
+            }
+        }
+        catch (Exception e) {
+            System.out.println("Your input is invalid! Your exception is: " + e.getMessage());
+        }
 	}
 	
 	public static void ListTheatersPlayingShow(Ticketmaster esql){//9
@@ -665,13 +735,147 @@ public class Ticketmaster{
 		
 	}
 
-	public static void ListMovieAndShowInfoAtCinemaInDateRange(Ticketmaster esql){//13
-		//
-		
+	public static void ListMovieAndShowInfoAtCinemaInDateRange(Ticketmaster esql) throws IOException, SQLException {// 13
+		/*select m1.title, m1.duration, s1.sdate, s1.sttime from movies m1, shows s1 where m1.title = 
+		'Avatar' and sdate in (select s2.sdate from shows s2 where s2.sdate between '01/01/2019' and 
+		'12/31/2019' and s2.mvid = (select m2.mvid from movies m2 where m2.title = 'Avatar')) and 
+		sid in (select p1.sid from plays p1 where p1.tid in (select t1.tid from theaters t1 where 
+		t1.cid in (select c1.cid from cinemas c1 where c1.cname = 'AMC')));*/
+
+		String movieTitle, theaterName, date1, date2;
+
+		System.out.println("\n\nMovie Title : ");
+		movieTitle = in.readLine();
+
+		System.out.println("Theater Name : ");
+		theaterName = in.readLine();
+
+		System.out.println("Begin Date(MM/DD/YYYY) : ");
+		date1 = in.readLine();
+
+		System.out.println("End Date(MM/DD/YYYY): ");
+		date2 = in.readLine();
+
+		String q = "select m1.title, m1.duration, s1.sdate, s1.sttime from movies m1, shows s1 where m1.title = '"
+		+ movieTitle + "' and sdate in (select s2.sdate from shows s2 where s2.sdate between '" + date1 + "' and'" 
+		+ date2 + "' and s2.mvid = (select m2.mvid from movies m2 where m2.title = '" + movieTitle + "')) and" 
+		+ " sid in (select p1.sid from plays p1 where p1.tid in (select t1.tid from theaters t1 where " + 
+		"t1.cid in (select c1.cid from cinemas c1 where c1.cname = '" + theaterName + "')));";
+
+		System.out.println("");
+		int result = esql.executeQueryAndPrintResult(q);
+		System.out.println("\n");
+
+
 	}
 
 	public static void ListBookingInfoForUser(Ticketmaster esql){//14
-		//
+		
+		String query;
+		String user_email;
+		String date;
+		String time;
+		String dt;
+		Timestamp ts = Timestamp.valueOf("2000-01-01 00:00:01"); // Booking Time
+		List<String> mvtitle_list = new ArrayList<String>();
+		List<String> mvid_list = new ArrayList<String>();
+		List<String> tname_list = new ArrayList<String>();
+		List<String> tid_list = new ArrayList<String>();
+		List<Timestamp> showdt_list = new ArrayList<Timestamp>();
+		List<List<String>> bid_list  = new ArrayList<List<String>>();
+		List<List<String>> sid_list  = new ArrayList<List<String>>();
+		List<List<List<String>>> csid_list  = new ArrayList<List<List<String>>>(); // A Lists of Lists Lists!!!
+		
+		//List the Movie Title, Show Date & Start Time, Theater Name, and Cinema Seat Number forall Bookings of a Given User
+		
+		/* Format:
+				1) Ask User for Email
+				2) Check Bookings for Given Email, and grab sid(s)* related to the given Email (if they have multiple bookings)
+				3) Using the obtained sid(s), we check the Show table for the Show Date(s) & Start Time(s) of the obtained sid(s)
+				4) Using the obtained sid(s), we also check the Show table for the mvid(s) of the related sid(s)
+				5) Using the obtained mvid(s), we check the Movies table for the Movie Title(s) of the given mvid(s)
+				6) Using the obtained sid(s), we check the Plays table for the tid(s) related to the given sid(s)
+				7) Using the obtained tid(s), we check the Theatre table for the Theatre name(s)
+				8) Cinema Seat Number = ??? (We never actually do anything with this particular table given the other functions nor do the data provided have bids attached to the ShowSeats entries)
+				9) Output all this stuff somehow
+		*/
+		
+		while(true) {
+			System.out.println("Enter the Email associated with the Bookings you'd like to check for.");
+			try {
+				user_email = in.readLine();
+				break;
+			} 
+			catch (Exception e) {
+				System.out.println("Your input is invalid! Your exception is: " + e.getMessage());
+				continue;
+			}
+		}
+		try {
+			query = "SELECT email\nFROM Users\n WHERE email = " + "'" + user_email + "'" + ";";
+			if (esql.executeQuery(query) == 0) { // Email doesn't exist in the database
+				System.out.println("This is not a valid user.");
+				return;
+			}
+			else {
+				query = "SELECT bid FROM Bookings WHERE email = '" + user_email + "';"; // Get BIDs
+				bid_list = esql.executeQueryAndReturnResult(query);
+ 				
+				query = "SELECT sid FROM Bookings WHERE email = '" + user_email + "';"; // Get SIDs
+				sid_list = esql.executeQueryAndReturnResult(query);
+				
+				for (int i = 0; i < sid_list.size(); i++) { // Get Date and Time
+					query = "SELECT sdate, sttime FROM Shows WHERE sid = " + sid_list.get(i).get(0) + ";";
+					date = esql.executeQueryAndReturnResult(query).get(0).get(0);
+					time = esql.executeQueryAndReturnResult(query).get(0).get(1);
+					dt = date + " " + time;
+					ts = Timestamp.valueOf(dt);
+					showdt_list.add(ts);
+				}
+				
+				for (int i = 0; i < sid_list.size(); i++) { // Get Movie ID
+					query = "SELECT mvid FROM Shows WHERE sid = " + sid_list.get(i).get(0) + ";";
+					mvid_list.add(esql.executeQueryAndReturnResult(query).get(0).get(0));
+				}
+				
+				for (int i = 0; i < mvid_list.size(); i++) { // Get Movie Title
+					query = "SELECT title FROM Movies WHERE mvid = " + mvid_list.get(i) + ";";
+					mvtitle_list.add(esql.executeQueryAndReturnResult(query).get(0).get(0));
+				}
+				
+				for (int i = 0; i < sid_list.size(); i++) { // Get Theatre ID
+					query = "SELECT tid FROM Plays WHERE sid = " + sid_list.get(i).get(0) + ";";
+					tid_list.add(esql.executeQueryAndReturnResult(query).get(0).get(0));
+				}
+				
+				for (int i = 0; i < tid_list.size(); i++) { // Get Theater Name
+					query = "SELECT tname FROM Theaters WHERE tid = " + tid_list.get(i) + ";";
+					tname_list.add(esql.executeQueryAndReturnResult(query).get(0).get(0));
+				}
+				
+				for (int i = 0; i < bid_list.size(); i++) { // Get Cinema Seat ID
+					query = "SELECT csid FROM ShowSeats WHERE bid = " + bid_list.get(i).get(0) + ";";
+					csid_list.add(esql.executeQueryAndReturnResult(query));
+				}
+				
+				for (int i = 0; i < sid_list.size(); i++) {
+					System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+					System.out.println("Movie Title: " + mvtitle_list.get(i));
+					System.out.println("Show Date and Time: " + showdt_list.get(i));
+					System.out.println("Theater Name: " + tname_list.get(i));
+					System.out.println("Cinema Seat Number(s): ");
+					for (int j = 0; j < csid_list.get(i).size(); j++) { // Cinema Seat ID based on SID
+						for (int k = 0; k < csid_list.get(i).get(j).size(); k++) { // Amount of Seats reserved for Specific SID
+							System.out.println(csid_list.get(i).get(j).get(k)); // The individual Cinema Seat IDs being printed
+						}
+					}
+				}
+				System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			}
+		}
+		catch (Exception e) {
+			System.out.println("Your input is invalid! Your exception is: " + e.getMessage());
+		}
 		
 	}
 	
