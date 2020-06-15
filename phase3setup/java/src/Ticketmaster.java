@@ -479,58 +479,59 @@ public class Ticketmaster{
 	
 	public static void AddMovieShowingToTheater(Ticketmaster esql){//3
 		try {
-			String title;
+			//initialize the attributes 
+			String movieTitle;
 			String rdate;
 			String country;
 			String description;
 			int duration;
 			String lang;
 			String genre;
-
 			String city;
 			long cid;
 			long tid;
-
 			String sdate;
 			String sttime;
 			String edtime;
 			
-			System.out.print("Please enter the title of movie you want to add: ");
-			title = in.readLine();
-			System.out.print("Enter release date of the selected movie in format MM/DD/YYYY: ");
+			System.out.print("Please enter the movieTitle: ");
+			movieTitle = in.readLine();
+			System.out.print("Please enter release date of the selected movie in format MM/DD/YYYY: ");
 			rdate = in.readLine();
-			System.out.print("Enter the country of the selected movie made in: ");
+			System.out.print("Please enter the country of the selected movie made in: ");
 			country = in.readLine();
-			System.out.print("Enter description of the new movie: ");
+			System.out.print("Please enter the description of the added movie: ");
 			description = in.readLine();
-			System.out.print("Enter duration of new movie: ");
+			System.out.print("Please enter the duration of the added movie: ");
 			duration = Integer.parseInt(in.readLine());
 			System.out.print("Enter the language code of new movie: ");
 			lang = in.readLine();
 			System.out.print("Enter the genre of new movie: ");
 			genre = in.readLine();
+			//SQL insert
+			esql.executeUpdate(String.format("INSERT INTO Movies (mvid, movieTitle, rdate, country, description, duration, lang, genre) VALUES (nextval('Movie_Seq'), '%s', '%s', '%s', '%s', %d, '%s', '%s');", movieTitle, rdate, country, description, duration, lang, genre));
 
-			esql.executeUpdate(String.format("INSERT INTO Movies (mvid, title, rdate, country, description, duration, lang, genre) VALUES (nextval('Movie_Seq'), '%s', '%s', '%s', '%s', %d, '%s', '%s');", title, rdate, country, description, duration, lang, genre));
-
-			System.out.print("Enter in city of cinema where showing will be: ");
+			System.out.print("Please Enter in city of cinema where showing will be: ");
 			city = in.readLine();
-			System.out.print("Here are a list of cinemas in this city\n");
+			System.out.print("Cinemas in this city: \n");
+			//SQL select out cinemas from the city
 			esql.executeQueryAndPrintResult(String.format("SELECT C2.cid, C2.cname, C2.tnum FROM Cities C1, Cinemas C2 WHERE C1.city_id = C2.city_id AND C1.city_name = '%s';", city));
 
 			System.out.print("Enter in cid of cinema where showing will be: ");
 			cid = Long.parseLong(in.readLine());
-			System.out.print("Here are a list of theaters in the selected cinema\n");
+			System.out.print("Theaters in the selected cinema: \n");
+			//SQL select theaters in the cinema
 			esql.executeQueryAndPrintResult(String.format("SELECT tid, tname, tseats FROM Theaters WHERE cid = %d;", cid));
 
-			System.out.print("Enter in tid of theater where showing will be: ");
+			System.out.print("Please enter in tid of theater where showing will be: ");
 			tid = Long.parseLong(in.readLine());
-			System.out.print("Enter in date of showing in format MM/DD/YYYY: ");
+			System.out.print("Please enter in date of showing in format MM/DD/YYYY: ");
 			sdate = in.readLine();
-			System.out.print("Enter in start time of showing in format HH:MM: ");
+			System.out.print("Please enter in start time of showing in format HH:MM: ");
 			sttime = in.readLine();
-			System.out.print("Enter in end time of showing in format HH:MM: ");
+			System.out.print("Please enter in end time of showing in format HH:MM: ");
 			edtime = in.readLine();
-
+			//SQL insert
 			esql.executeUpdate(String.format("INSERT INTO Shows (sid, mvid, sdate, sttime, edtime) VALUES (nextval('Show_Seq'), %d, '%s', '%s', '%s');", esql.getCurrSeqVal("Movie_Seq"), sdate, sttime, edtime));
 			esql.executeUpdate(String.format("INSERT INTO Plays (sid, tid) VALUES (%d, %d);", esql.getCurrSeqVal("Show_Seq"), tid));
 
@@ -639,14 +640,12 @@ public class Ticketmaster{
 			String cinemaName;
 			String showDate;
 
-			System.out.print("What is the name of the cinema?\n");
+			System.out.print("Please enter the name of the cinema: \n");
 			cinemaName = in.readLine();
 			
-			System.out.print("What is the date that you want to cancel?\n");
+			System.out.print("Please enter the date of the show that you want to cancel: \n");
 			showDate = in.readLine();
-			
-			// TODO:
-			// "remove" bookings using remove payment above
+			//SQL Delete!
 			List<List<String>> bids = esql.executeQueryAndReturnResult(String.format("SELECT B.bid FROM Bookings B, Shows S, Plays P, Theaters T, Cinemas C WHERE C.cname = '%s' AND C.cid = T.cid AND T.tid = P.tid AND P.sid = S.sid AND S.sdate = CAST('%s' AS DATE) AND B.sid = S.sid;", cinemaName, showDate));
 			for(List<String> bid : bids) {
 				esql.executeUpdate(String.format("UPDATE Bookings SET status = 'Cancelled' WHERE bid = '%s';", bid.get(0)));
@@ -658,7 +657,7 @@ public class Ticketmaster{
 				esql.executeUpdate(String.format("DELETE FROM Shows WHERE sid = '%s';", sid.get(0)));
 			}
 
-			System.out.println("Successfully removed all shows on that date!\n");
+			System.out.println("Removed all shows on that date already!\n");
 		} catch (Exception e) {
 			System.out.println(e.getMessage() + "\n");
 		}	
@@ -743,7 +742,7 @@ public class Ticketmaster{
 
 
 	}
-	//implement an easier way to 
+	//implement an easier way to implement 14
 	public static void ListBookingInfoForUser(Ticketmaster esql){//14
 		try {
 			String email;
@@ -754,7 +753,7 @@ public class Ticketmaster{
 			System.out.print("Here are all the bookings for this user\n");
 			esql.executeQueryAndPrintResult(String.format("SELECT M.title, S0.sdate, S0.sttime, T.tname, C.sno FROM Movies M, Shows S0, Theaters T, ShowSeats S1, CinemaSeats C, Plays P, Bookings B WHERE B.email = '%s' AND B.sid = S0.sid AND S0.mvid = M.mvid AND S0.sid = P.sid AND P.tid = T.tid AND B.bid = S1.bid AND S1.csid = C.csid", email));
 		} catch (Exception e) {
-			System.out.println(e.getMessage() + "\n");
+			System.e.println(e.getMessage());
 		}
 	}
 
