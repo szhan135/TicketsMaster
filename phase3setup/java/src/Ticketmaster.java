@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.math.BigDecimal;
-import java.io.IOException;
 
 /**
  * This class defines a simple embedded SQL utility class that is designed to
@@ -493,7 +492,7 @@ public class Ticketmaster{
 	}
 	
 	public static void ChangeSeatsForBooking(Ticketmaster esql) throws Exception{//5
-
+		
 	}
 	
 	public static void RemovePayment(Ticketmaster esql){//6
@@ -530,7 +529,6 @@ public class Ticketmaster{
 	}
 	
 	public static void RemoveShowsOnDate(Ticketmaster esql){//8
-		
 		
 	}
 	
