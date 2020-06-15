@@ -645,77 +645,33 @@ public class Ticketmaster{
 	}
 	
 	public static void RemoveShowsOnDate(Ticketmaster esql){//8
-		String cinema_name;
-        String date;
-        String query;
-        List<String> cname_list = new ArrayList<String>();
-        List<String> tid_list = new ArrayList<String>();
-        List<List<String>> sid_list  = new ArrayList<List<String>>();
-        
-        /* Format:
-                1) Ask User what date they would like to cancel all shows on (store this answer)
-                2) Ask User which cinema they would want to cancel all shows on (store this answer)
-                3) Using these two answers, select all sids that have the given date, obtaining the tids (in Plays.csv)
-                4) Then, using the obtained tids, because they are exactly the same as their cid counterparts, 
-                   we will do a crossreference for the given user cinema selection to cancel all the shows with the given date at the given cinema
-                5) Additionally, we need to cancel all the Bookings on those dates (We can do this using the sids from earlier)
-        */
-        
-        while(true) {
-            System.out.println("Enter the date you'd like to cancel all shows on. (mm/dd/yyyy)");
-            try {
-                date = in.readLine();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-                Date date2 = null;
-                date2 = dateFormat.parse(date);
-                break;
-            } 
-            catch (Exception e) {
-                System.out.println("Your input is invalid! Your exception is: " + e.getMessage());
-            }
-        }
-        try {
-            System.out.println("Enter the name of the specific cinema where you'd like to cancel the shows based on the given date.\nThe cinemas that you can choose from are:");
-            System.out.println("AMC\nGeneral Cinemas\nHarkins\nIMAX Corporation\nRegal Cinemas\nStudio Movie Grill");
-            
-            cinema_name = in.readLine();
-            try {
-                if (cinema_name.equals("AMC") || cinema_name.equals("General Cinemas") || cinema_name.equals("Harkins") || cinema_name.equals("IMAX Corporation") || 
-                    cinema_name.equals("Regal Cinemas") || cinema_name.equals("Studio Movie Grill")) {
-                        query = "SELECT sid FROM Shows WHERE sdate = '" + date + "';";
-                        sid_list = esql.executeQueryAndReturnResult(query); // This is a list of sids given the date
-                        
-                        for (int i = 0; i < sid_list.size(); i++) { // This is a list of tids given the sids
-                            query = "SELECT tid FROM Plays WHERE sid = " + sid_list.get(i).get(0) + ";";
-                            tid_list.add(esql.executeQueryAndReturnResult(query).get(0).get(0));
-                        }
-                        
-                        for (int i = 0; i < tid_list.size(); i++) { // This is a list of cnames given the tids
-                            query = "SELECT cname FROM Cinemas WHERE cid = " + tid_list.get(i) + ";";
-                            cname_list.add(esql.executeQueryAndReturnResult(query).get(0).get(0));
-                        }
-                        
-                        for (int i = 0; i < cname_list.size(); i++) {
-                            if (cinema_name.equals(cname_list.get(i))) {
-                                query = "DELETE FROM Shows WHERE sid = " + sid_list.get(i).get(0) + ";"; // Because the three lists above are aligned, we can do this
-                                esql.executeUpdate(query);
-                                
-                                System.out.println("Shows on " + date + " at " + cinema_name + " successfully removed.");
-                            }
-                        }
-                }
-                else {
-                    System.out.println("Please enter a valid cinema from the list next time.");
-                    return;
-                }
-            }
-            catch (Exception e) {
-                System.out.println("Your input is invalid! Your exception is: " + e.getMessage());
-            }
-        }
-        catch (Exception e) {
-            System.out.println("Your input is invalid! Your exception is: " + e.getMessage());
-        }
+		try {
+			String cinemaName;
+			String showDate;
+
+			System.out.print("What is the name of the cinema?\n");
+			cinemaName = in.readLine();
+			
+			System.out.print("What is the date that you want to cancel?\n");
+			showDate = in.readLine();
+			
+			// TODO:
+			// "remove" bookings using remove payment above
+			List<List<String>> bids = esql.executeQueryAndReturnResult(String.format("SELECT B.bid FROM Bookings B, Shows S, Plays P, Theaters T, Cinemas C WHERE C.cname = '%s' AND C.cid = T.cid AND T.tid = P.tid AND P.sid = S.sid AND S.sdate = CAST('%s' AS DATE) AND B.sid = S.sid;", cinemaName, showDate));
+			for(List<String> bid : bids) {
+				esql.executeUpdate(String.format("UPDATE Bookings SET status = 'Cancelled' WHERE bid = '%s';", bid.get(0)));
+				esql.executeUpdate(String.format("DELETE FROM Payments WHERE bid = '%s';", bid.get(0)));
+			}
+
+			List<List<String>> sids = esql.executeQueryAndReturnResult(String.format("SELECT S.sid FROM Shows S, Plays P, Theaters T, Cinemas C WHERE C.cname = '%s' AND C.cid = T.cid AND T.tid = P.tid AND P.sid = S.sid AND S.sdate = CAST('%s' AS DATE);", cinemaName, showDate));
+			for(List<String> sid : sids) {
+				esql.executeUpdate(String.format("DELETE FROM Shows WHERE sid = '%s';", sid.get(0)));
+			}
+
+			System.out.println("Successfully removed all shows on that date!\n");
+		} catch (Exception e) {
+			System.out.println(e.getMessage() + "\n");
+		}	
 	}
 	
 	public static void ListTheatersPlayingShow(Ticketmaster esql){//9
