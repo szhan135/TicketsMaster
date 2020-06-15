@@ -475,15 +475,98 @@ public class Ticketmaster{
 	}
 	
 	public static void AddMovieShowingToTheater(Ticketmaster esql){//3
-		
+		try{
+			System.out.print("Enter Movie ID: ");
+			String mvid = in.readLine();
+		}catch (Exception err) {
+			System.err.println(err.getMessage());
+		}
 	}
 	
 	public static void CancelPendingBookings(Ticketmaster esql){//4
 		try {
-			esql.executeUpdate("Update ShowSeats SET bid = NULL where bid = (select bid from bookings where status = 'Pending')");
-			esql.executeUpdate("Update Bookings SET status = 'Cancelled' where status = 'Pending' ");
-			System.out.print("Cancelled all pending bookings\n");
-			System.out.print("========================================================\n");
+					String movieTitle, releaseDate, country, description, lang, genre, sdate, sttime, edtime, q1, q2, q3;
+			int movieId, sid, tid, duration;
+
+			List<List<String>> movieIdMax = esql.executeQueryAndReturnResult("Choose a maximum of movieId from movies;");
+			movieId = Integer.parseInt(movieIdMax.get(0).get(0)) + 1;
+
+			List<List<String>> sidMax = esql.executeQueryAndReturnResult("Choose a maximum of showId from shows;");
+			sid = Integer.parseInt(sidMax.get(0).get(0)) + 1;
+
+			System.out.println("The Below Shows Movie Info");
+			System.out.print("Movie Title is: ");
+			movieTitle = in.readLine();
+			System.out.println("");
+
+			System.out.print("The selected movie's Release Date(MM/DD/YYYY): ");
+			releaseDate = in.readLine();
+			System.out.println("");
+
+			System.out.print("Which Country: ");
+			country = in.readLine();
+			System.out.println("");
+
+			System.out.print("Movie's Description: ");
+			description = in.readLine();
+			System.out.println("");	
+
+			do {
+				System.out.print("Duration in Seconds: ");
+				try { 
+					duration = Integer.parseInt(in.readLine());
+					break;
+				} catch (Exception e) {
+					System.out.println("Invalid Input, Try Again!");
+					continue;
+				}
+			} while (true);
+			System.out.println("");
+
+			System.out.print("Language: ");
+			lang = in.readLine();
+			System.out.println("");	
+			
+
+			System.out.print("Genre: ");
+			genre = in.readLine();
+			System.out.println("");	
+
+			System.out.println("The Below Shows Show Info");
+			System.out.print("Show Date(MM/DD/YYYY): ");
+			sdate = in.readLine();
+			System.out.println("");
+			
+			System.out.print("Start Time(HH:MM): ");
+			sttime = in.readLine();
+			System.out.println("");
+
+			System.out.print("End Time(HH:MM): ");
+			edtime = in.readLine();
+			System.out.println("");
+
+
+			List<List<String>> tidMin = esql.executeQueryAndReturnResult("Choose the minimum of tid from theaters;");
+			int tidMIN = Integer.parseInt(tidMin.get(0).get(0));
+
+			List<List<String>> tidMax = esql.executeQueryAndReturnResult("Choose the maximum of tid from theaters;");
+			int tidMAX = Integer.parseInt(tidMax.get(0).get(0));
+
+			System.out.print("Theater ID (Between " + tidMIN + " and " + tidMAX + ") : ");
+			tid = Integer.parseInt(in.readLine());
+			System.out.println("");
+
+			q1 = "INSERT INTO Movies (movieId, movieTitle, rdate, country, description, duration, lang, genre) values (" 
+			+ movieId + ", '" + movieTitle + "', '" + releaseDate + "', '" + country + "', '" + description + "', " + 
+			duration + ", '" + lang + "', '" + genre + "' );";
+			esql.executeUpdate(q1);
+
+			q2 = "INSERT INTO Shows (sid, movieId, sdate, sttime, edtime) values (" + sid + ", " + movieId + ", '" + 
+			sdate + "', '" + sttime + "', '" + edtime + "');";
+			esql.executeUpdate(q2);
+
+			q3 = "INSERT INTO Plays (sid, tid) values (" + sid + ", " + tid + ");";
+			esql.executeUpdate(q3);
 		}catch(Exception err) {
 			System.err.println(err.getMessage());
 		}
