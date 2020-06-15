@@ -542,8 +542,8 @@ public class Ticketmaster{
 			}
 
 			System.out.println("New movie added!\n");
-		} catch (Exception e) {
-			System.out.println(e.getMessage() + "\n");
+		} catch (Exception err) {
+			System.out.println(err.getMessage() + "\n");
 		}
 	}
 	
@@ -597,8 +597,8 @@ public class Ticketmaster{
 		   }
 
 		   System.out.println("Seat Changed!\n");// success signal
-	   } catch (Exception e) {
-		   System.out.println(e.getMessage() + "\n");
+	   } catch (Exception err) {
+		   System.out.println(err.getMessage() + "\n");
 	   }
    }
 	
@@ -658,8 +658,8 @@ public class Ticketmaster{
 			}
 
 			System.out.println("Removed all shows on that date already!\n");
-		} catch (Exception e) {
-			System.out.println(e.getMessage() + "\n");
+		} catch (Exception err) {
+			System.out.println(err.getMessage() + "\n");
 		}	
 	}
 	
@@ -752,8 +752,8 @@ public class Ticketmaster{
 
 			System.out.print("Here are all the bookings for this user\n");
 			esql.executeQueryAndPrintResult(String.format("SELECT M.title, S0.sdate, S0.sttime, T.tname, C.sno FROM Movies M, Shows S0, Theaters T, ShowSeats S1, CinemaSeats C, Plays P, Bookings B WHERE B.email = '%s' AND B.sid = S0.sid AND S0.mvid = M.mvid AND S0.sid = P.sid AND P.tid = T.tid AND B.bid = S1.bid AND S1.csid = C.csid", email));
-		} catch (Exception e) {
-			System.e.println(e.getMessage());
+		} catch (Exception err) {
+			System.err.println(err.getMessage());
 		}
 	}
 
@@ -772,21 +772,9 @@ public class Ticketmaster{
 	// 	List<Timestamp> showdt_list = new ArrayList<Timestamp>();
 	// 	List<List<String>> bid_list  = new ArrayList<List<String>>();
 	// 	List<List<String>> sid_list  = new ArrayList<List<String>>();
-	// 	List<List<List<String>>> csid_list  = new ArrayList<List<List<String>>>(); // A Lists of Lists Lists!!!
+	// 	List<List<List<String>>> csid_list  = new ArrayList<List<List<String>>>();
 		
 	// 	//List the Movie Title, Show Date & Start Time, Theater Name, and Cinema Seat Number forall Bookings of a Given User
-		
-	// 	/* Format:
-	// 			1) Ask User for Email
-	// 			2) Check Bookings for Given Email, and grab sid(s)* related to the given Email (if they have multiple bookings)
-	// 			3) Using the obtained sid(s), we check the Show table for the Show Date(s) & Start Time(s) of the obtained sid(s)
-	// 			4) Using the obtained sid(s), we also check the Show table for the mvid(s) of the related sid(s)
-	// 			5) Using the obtained mvid(s), we check the Movies table for the Movie Title(s) of the given mvid(s)
-	// 			6) Using the obtained sid(s), we check the Plays table for the tid(s) related to the given sid(s)
-	// 			7) Using the obtained tid(s), we check the Theatre table for the Theatre name(s)
-	// 			8) Cinema Seat Number = ??? (We never actually do anything with this particular table given the other functions nor do the data provided have bids attached to the ShowSeats entries)
-	// 			9) Output all this stuff somehow
-	// 	*/
 		
 	// 	while(true) {
 	// 		System.out.println("Enter the Email associated with the Bookings you'd like to check for.");
@@ -846,17 +834,6 @@ public class Ticketmaster{
 	// 				csid_list.add(esql.executeQueryAndReturnResult(query));
 	// 			}
 				
-	// 			for (int i = 0; i < sid_list.size(); i++) {
-	// 				System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-	// 				System.out.println("Movie Title: " + mvtitle_list.get(i));
-	// 				System.out.println("Show Date and Time: " + showdt_list.get(i));
-	// 				System.out.println("Theater Name: " + tname_list.get(i));
-	// 				System.out.println("Cinema Seat Number(s): ");
-	// 				for (int j = 0; j < csid_list.get(i).size(); j++) { // Cinema Seat ID based on SID
-	// 					for (int k = 0; k < csid_list.get(i).get(j).size(); k++) { // Amount of Seats reserved for Specific SID
-	// 						System.out.println(csid_list.get(i).get(j).get(k)); // The individual Cinema Seat IDs being printed
-	// 					}
-	// 				}
 	// 			}
 	// 			System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 	// 		}
