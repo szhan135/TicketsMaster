@@ -502,14 +502,16 @@ public class Ticketmaster{
  
 			System.out.print("Please Enter the seatID");
 			seatID = in.readLine();//read the seatID input
-			System.out.print("What is the ID of the new seat that you want to change");
+			System.out.print("What is the ID of the new seat that you want to change: ");
 			newSeatID = in.readLine();
  
 			List<String> oldSeat = esql.executeQueryAndReturnResult(String.format("SELECT * FROM ShowSeats WHERE ssid = '%s';", seatID)).get(0);
 			List<String> newSeat = esql.executeQueryAndReturnResult(String.format("SELECT * FROM ShowSeats WHERE ssid = '%s';", newSeatID)).get(0);
  
 			String oldSeatPrice = oldSeat.get(4);
+			System.out.print(oldSeatPrice);
 			String newSeatPrice = newSeat.get(4);
+			System.out.print(newSeatPrice);
 			String newSeatBid = newSeat.get(3);
  
 			if (newSeatBid == null) {
