@@ -479,10 +479,10 @@ public class Ticketmaster{
 			String movieTitle, releaseDate, country, description, lang, genre, sdate, sttime, edtime, q1, q2, q3;
 			int movieId, sid, tid, duration;
 
-			List<List<String>> movieIdMax = esql.executeQueryAndReturnResult("Choose a maximum of movieId from movies;");
+			List<List<String>> movieIdMax = esql.executeQueryAndReturnResult("Choose a maximum of mvid from movies;");
 			movieId = Integer.parseInt(movieIdMax.get(0).get(0)) + 1;
 
-			List<List<String>> sidMax = esql.executeQueryAndReturnResult("Choose a maximum of showId from shows;");
+			List<List<String>> sidMax = esql.executeQueryAndReturnResult("Choose a maximum of sid from shows;");
 			sid = Integer.parseInt(sidMax.get(0).get(0)) + 1;
 
 			System.out.println("The Below Shows Movie Info");
