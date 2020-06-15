@@ -500,7 +500,7 @@ public class Ticketmaster{
 			System.out.print("Please Type in the bookingID of for seat change: ");
 			bookingID = in.readLine();//read the bookingID input
  
-			System.out.print("Please Enter the seatID");
+			System.out.print("Please Enter the seatID: ");
 			seatID = in.readLine();//read the seatID input
 			System.out.print("What is the ID of the new seat that you want to change: ");
 			newSeatID = in.readLine();
@@ -508,10 +508,8 @@ public class Ticketmaster{
 			List<String> oldSeat = esql.executeQueryAndReturnResult(String.format("SELECT * FROM ShowSeats WHERE ssid = '%s';", seatID)).get(0);
 			List<String> newSeat = esql.executeQueryAndReturnResult(String.format("SELECT * FROM ShowSeats WHERE ssid = '%s';", newSeatID)).get(0);
  
-			String oldSeatPrice = oldSeat.get(4);
-			System.out.print(oldSeatPrice);
-			String newSeatPrice = newSeat.get(4);
-			System.out.print(newSeatPrice);
+			int oldSeatPrice = Integer.parseInt(oldSeat.get(4));
+			int newSeatPrice = Integer.parseInt(newSeat.get(4));
 			String newSeatBid = newSeat.get(3);
  
 			if (newSeatBid == null) {
