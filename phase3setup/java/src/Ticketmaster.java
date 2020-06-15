@@ -476,16 +476,7 @@ public class Ticketmaster{
 	
 	public static void AddMovieShowingToTheater(Ticketmaster esql){//3
 		try{
-			System.out.print("Enter Movie ID: ");
-			String mvid = in.readLine();
-		}catch (Exception err) {
-			System.err.println(err.getMessage());
-		}
-	}
-	
-	public static void CancelPendingBookings(Ticketmaster esql){//4
-		try {
-					String movieTitle, releaseDate, country, description, lang, genre, sdate, sttime, edtime, q1, q2, q3;
+			String movieTitle, releaseDate, country, description, lang, genre, sdate, sttime, edtime, q1, q2, q3;
 			int movieId, sid, tid, duration;
 
 			List<List<String>> movieIdMax = esql.executeQueryAndReturnResult("Choose a maximum of movieId from movies;");
@@ -567,6 +558,17 @@ public class Ticketmaster{
 
 			q3 = "INSERT INTO Plays (sid, tid) values (" + sid + ", " + tid + ");";
 			esql.executeUpdate(q3);
+		}catch (Exception err) {
+			System.err.println(err.getMessage());
+		}
+	}
+	
+	public static void CancelPendingBookings(Ticketmaster esql){//4
+		try {
+			esql.executeUpdate("Update ShowSeats SET bid = NULL where bid = (select bid from bookings where status = 'Pending')");
+			esql.executeUpdate("Update Bookings SET status = 'Cancelled' where status = 'Pending' ");
+			System.out.print("Cancelled all pending bookings\n");
+			System.out.print("========================================================\n");
 		}catch(Exception err) {
 			System.err.println(err.getMessage());
 		}
