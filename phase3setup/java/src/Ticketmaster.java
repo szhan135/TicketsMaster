@@ -540,12 +540,12 @@ public class Ticketmaster{
 			tid = Integer.parseInt(in.readLine());
 			System.out.println("");
 
-			q1 = "INSERT INTO Movies (movieId, movieTitle, rdate, country, description, duration, lang, genre) values (" 
+			q1 = "INSERT INTO Movies (mvid, title, rdate, country, description, duration, lang, genre) values (" 
 			+ movieId + ", '" + movieTitle + "', '" + releaseDate + "', '" + country + "', '" + description + "', " + 
 			duration + ", '" + lang + "', '" + genre + "' );";
 			esql.executeUpdate(q1);
 
-			q2 = "INSERT INTO Shows (sid, movieId, sdate, sttime, edtime) values (" + sid + ", " + movieId + ", '" + 
+			q2 = "INSERT INTO Shows (sid, mvid, sdate, sttime, edtime) values (" + sid + ", " + movieId + ", '" + 
 			sdate + "', '" + sttime + "', '" + edtime + "');";
 			esql.executeUpdate(q2);
 
