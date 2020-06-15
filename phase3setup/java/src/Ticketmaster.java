@@ -493,45 +493,7 @@ public class Ticketmaster{
 	}
 	
 	public static void ChangeSeatsForBooking(Ticketmaster esql) throws Exception{//5
-		String bookingID;
-		   String seatID;
-		   String newSeatID;
-		   String sqlFormat;
-
-		   System.out.print("Please Type in the bookingID of for seat change: ");
-		   bookingID = in.readLine();//read the bookingID input
-
-		   System.out.print("Please Enter the seatID");
-		   seatID = in.readLine();//read the seatID input
-		   System.out.print("What is the ID of the new seat that you want to change");
-		   newSeatID = in.readLine();
-
-		   List<String> oldSeat = esql.executeQueryAndReturnResult(String.format("SELECT * FROM ShowSeats WHERE ssid = '%s';", seatID)).get(0);
-		   List<String> newSeat = esql.executeQueryAndReturnResult(String.format("SELECT * FROM ShowSeats WHERE ssid = '%s';", newSeatID)).get(0);
-
-		   String oldSeatPrice = oldSeat.get(4);
-		   String newSeatPrice = newSeat.get(4);
-		   String newSeatBid = newSeat.get(3);
-
-		   if (newSeatBid == null) {
-			   if (newSeatPrice == oldSeatPrice) {
-				sqlFormat = String.format("UPDATE ShowSeats SET bid = NULL WHERE ssid = '%s';", seatID);
-				   esql.executeUpdate(sqlFormat);
-				   sqlFormat = String.format("UPDATE ShowSeats SET bid = '%s' WHERE ssid = '%s';", bookingID, newSeatID);
-				   esql.executeUpdate(sqlFormat);
-			   } else {
-				   System.out.println("Sorry! The seat you want to switch is different in price. \n");
-				   return;
-			   }
-		   } else {//In case user input invalid ID
-			   System.out.println("Sorry! Invalid ID \n");
-			   return;
-		   }
-
-		   System.out.println("Seat Changed!\n");// success signal
-	   } catch (Exception e) {
-		   System.out.println(e.getMessage() + "\n");
-	   }
+		
 	}
 	
 	public static void RemovePayment(Ticketmaster esql){//6
