@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.math.BigDecimal;
+import java.io.IOException;
 
 /**
  * This class defines a simple embedded SQL utility class that is designed to
