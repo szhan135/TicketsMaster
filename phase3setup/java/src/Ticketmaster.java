@@ -583,29 +583,33 @@ public class Ticketmaster{
 
 	public static void ListMovieAndShowInfoAtCinemaInDateRange(Ticketmaster esql){//13
 		//
-		String movieTitle, theaterName, date1, date2;
+		try{
+			String movieTitle, theaterName, date1, date2;
 
-		System.out.println("\n\nMovie Title : ");
-		movieTitle = in.readLine();
+			System.out.println("\n\nMovie Title : ");
+			movieTitle = in.readLine();
 
-		System.out.println("Theater Name : ");
-		theaterName = in.readLine();
+			System.out.println("Theater Name : ");
+			theaterName = in.readLine();
 
-		System.out.println("Begin Date(MM/DD/YYYY) : ");
-		date1 = in.readLine();
+			System.out.println("Begin Date(MM/DD/YYYY) : ");
+			date1 = in.readLine();
 
-		System.out.println("End Date(MM/DD/YYYY): ");
-		date2 = in.readLine();
+			System.out.println("End Date(MM/DD/YYYY): ");
+			date2 = in.readLine();
 
-		String q = "select m1.title, m1.duration, s1.sdate, s1.sttime from movies m1, shows s1 where m1.title = '"
-		+ movieTitle + "' and sdate in (select s2.sdate from shows s2 where s2.sdate between '" + date1 + "' and'" 
-		+ date2 + "' and s2.mvid = (select m2.mvid from movies m2 where m2.title = '" + movieTitle + "')) and" 
-		+ " sid in (select p1.sid from plays p1 where p1.tid in (select t1.tid from theaters t1 where " + 
-		"t1.cid in (select c1.cid from cinemas c1 where c1.cname = '" + theaterName + "')));";
+			String q = "select m1.title, m1.duration, s1.sdate, s1.sttime from movies m1, shows s1 where m1.title = '"
+			+ movieTitle + "' and sdate in (select s2.sdate from shows s2 where s2.sdate between '" + date1 + "' and'" 
+			+ date2 + "' and s2.mvid = (select m2.mvid from movies m2 where m2.title = '" + movieTitle + "')) and" 
+			+ " sid in (select p1.sid from plays p1 where p1.tid in (select t1.tid from theaters t1 where " + 
+			"t1.cid in (select c1.cid from cinemas c1 where c1.cname = '" + theaterName + "')));";
 
-		System.out.println("");
-		int result = esql.executeQueryAndPrintResult(q);
-		System.out.println("\n");
+			System.out.println("");
+			int result = esql.executeQueryAndPrintResult(q);
+			System.out.println("\n");
+		} catch (Exception e) {
+			System.out.println(e.getMessage() + "\n");
+		}
 	}
 
 	public static void ListBookingInfoForUser(Ticketmaster esql){//14
