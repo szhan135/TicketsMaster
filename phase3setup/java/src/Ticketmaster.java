@@ -533,12 +533,8 @@ public class Ticketmaster{
 			edtime = in.readLine();
 			System.out.println("");
 
-
-			List<List<String>> tidMin = esql.executeQueryAndReturnResult("Choose the minimum of tid from theaters;");
-			int tidMIN = Integer.parseInt(tidMin.get(0).get(0));
-
-			List<List<String>> tidMax = esql.executeQueryAndReturnResult("Choose the maximum of tid from theaters;");
-			int tidMAX = Integer.parseInt(tidMax.get(0).get(0));
+			int tidMIN = 0;
+			int tidMAX = (esql.executeQueryAndReturnResult("Select tid from theaters")).size()+1;
 
 			System.out.print("Theater ID (Between " + tidMIN + " and " + tidMAX + ") : ");
 			tid = Integer.parseInt(in.readLine());
